@@ -1,7 +1,7 @@
 # NainDev Brandbook & Design System (v1.5)
 
 [![Live Portal](https://img.shields.io/badge/Live-brand.naindev.com-0047AB)](https://brand.naindev.com)
-[![Contrast](https://img.shields.io/badge/WCAG-2.1_AAA%2FAA-22c55e)](https://www.w3.org/WAI/WCAG21/quickref/)
+[![Accessibility](https://img.shields.io/badge/WCAG-2.1_AAA%2FAA-22c55e)](https://www.w3.org/WAI/WCAG21/quickref/)
 [![Tokens](https://img.shields.io/badge/Tokens-CSS_Variables-3C5F94)](#design-tokens)
 [![Cost](https://img.shields.io/badge/Cost-0.00_%E2%82%AC-22c55e)](#zero-billable-cost)
 
@@ -27,7 +27,7 @@ Import the standalone token stylesheet into any application:
 
 ### Core Palette
 
-| Token | Hex | Role | Contrast on Paper |
+| Token | Hex | Role | Luminance Ratio |
 | :--- | :--- | :--- | :--- |
 | `--nain-blue-deep` | `#002B66` | Primary reading ink | **12.0:1 (AAA)** |
 | `--nain-blue` | `#0047AB` | Brand signature & primary CTA | **7.4:1 (AAA)** |
