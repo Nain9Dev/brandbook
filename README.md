@@ -3,6 +3,7 @@
 [![Live Portal](https://img.shields.io/badge/Live-brand.naindev.com-0047AB)](https://brand.naindev.com)
 [![Accessibility](https://img.shields.io/badge/WCAG-2.1_AAA%2FAA-22c55e)](https://www.w3.org/WAI/WCAG21/quickref/)
 [![Tokens](https://img.shields.io/badge/Tokens-CSS_Variables-3C5F94)](#design-tokens)
+[![License](https://img.shields.io/badge/License-All_Rights_Reserved-red)](#brand-protection--license)
 [![Cost](https://img.shields.io/badge/Cost-0.00_%E2%82%AC-22c55e)](#zero-billable-cost)
 
 Official visual identity specifications, geometric logo mathematics, color palette contrast tables, typography scale, and layout guidelines for the **NainDev Ecosystem**.
@@ -52,3 +53,9 @@ Import the standalone token stylesheet into any application:
 ## Zero Billable Cost
 
 The brandbook is hosted statically via GitHub Pages and edge-proxied through Cloudflare at **0.00 €** operating cost.
+
+---
+
+## Brand Protection & License
+
+The NainDev brand assets, logos, typography hierarchy, and visual design specifications are **All Rights Reserved** (see [LICENSE](LICENSE)). The standalone `tokens.css` file is available for technical reference and authorized ecosystem integration. Commercial reproduction or unauthorized rebranding is strictly prohibited.
