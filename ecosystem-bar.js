@@ -501,6 +501,53 @@
       color: #fff;
     }
 
+    /* LOCALIZATION SWITCHER */
+    .locale-switcher {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(0, 43, 102, 0.5);
+      border: 1px solid rgba(0, 71, 171, 0.45);
+      border-radius: 5px;
+      padding: 1px 3px;
+      gap: 2px;
+    }
+
+    .btn-lang {
+      appearance: none;
+      background: transparent;
+      border: none;
+      color: var(--bar-text-muted);
+      font-family: var(--bar-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1.2;
+    }
+
+    .btn-lang:hover {
+      color: #fff;
+    }
+
+    .btn-lang.active {
+      background: var(--bar-accent);
+      color: var(--bar-green);
+      box-shadow: 0 0 6px rgba(0, 71, 171, 0.6);
+    }
+
+    .btn-lang:focus-visible {
+      outline: 2px solid var(--bar-green);
+      outline-offset: 1px;
+    }
+
+    .lang-divider {
+      font-size: 10px;
+      color: rgba(139, 162, 196, 0.35);
+      user-select: none;
+    }
+
     /* ARCHITECTURE DRAWER & BACKDROP */
     .drawer-backdrop {
       position: fixed;
@@ -823,6 +870,27 @@
       this._drawerOpen = false;
       this._activeTab = 'invariants';
       this._customTelemetry = [];
+      this._locale = this._getInitialLocale();
+    }
+
+    _getInitialLocale() {
+      try {
+        const stored = localStorage.getItem('nain_locale');
+        if (stored === 'en' || stored === 'es') return stored;
+      } catch (_) {}
+      return 'es';
+    }
+
+    setLocale(locale) {
+      if (locale !== 'es' && locale !== 'en') return;
+      this._locale = locale;
+      try {
+        localStorage.setItem('nain_locale', locale);
+      } catch (_) {}
+      window.dispatchEvent(new CustomEvent('nain:locale-change', {
+        detail: { locale }
+      }));
+      this.render();
     }
 
     static get observedAttributes() {
@@ -979,6 +1047,12 @@
           return;
         }
 
+        const langBtn = e.target.closest('.btn-lang');
+        if (langBtn && langBtn.dataset.locale) {
+          this.setLocale(langBtn.dataset.locale);
+          return;
+        }
+
         const simBtn = e.target.closest('.btn-simulate');
         if (simBtn) {
           window.dispatchEvent(new CustomEvent('nain:telemetry', {
@@ -1123,7 +1197,7 @@
             </a>
             ${!this._collapsed ? `
               <div class="project-pill">
-                <span>Plataforma</span>
+                <span>${this._locale === 'en' ? 'Platform' : 'Plataforma'}</span>
                 <strong>${currentProjectName}</strong>
               </div>
             ` : ''}
@@ -1131,18 +1205,24 @@
 
           ${!this._collapsed ? `
             <div class="bar-right">
-              <button type="button" class="btn btn-telemetry" aria-label="Inspeccionar arquitectura y telemetría" title="Abrir Drawer de Arquitectura & Telemetría (Alt+A)">
+              <div class="locale-switcher" role="group" aria-label="${this._locale === 'en' ? 'Language selector' : 'Selector de idioma'}">
+                <button type="button" class="btn-lang ${this._locale === 'es' ? 'active' : ''}" data-locale="es" aria-pressed="${this._locale === 'es'}" title="Español de España (por defecto)">ES</button>
+                <span class="lang-divider" aria-hidden="true">/</span>
+                <button type="button" class="btn-lang ${this._locale === 'en' ? 'active' : ''}" data-locale="en" aria-pressed="${this._locale === 'en'}" title="English (Professional)">EN</button>
+              </div>
+
+              <button type="button" class="btn btn-telemetry" aria-label="${this._locale === 'en' ? 'Inspect architecture & telemetry' : 'Inspeccionar arquitectura y telemetría'}" title="${this._locale === 'en' ? 'Open Architecture & Telemetry Drawer (Alt+A)' : 'Abrir Drawer de Arquitectura & Telemetría (Alt+A)'}">
                 <svg class="telemetry-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                   <polyline points="2 17 12 22 22 17"></polyline>
                   <polyline points="2 12 12 17 22 12"></polyline>
                 </svg>
-                <span>Arquitectura</span>
+                <span>${this._locale === 'en' ? 'Architecture' : 'Arquitectura'}</span>
               </button>
 
               <div class="dropdown-container">
-                <button type="button" class="btn btn-dropdown dropdown-toggle" aria-expanded="${this._menuOpen}" aria-haspopup="true" aria-label="Explorar proyectos del ecosistema">
-                  <span>Proyectos (${CATALOG.reduce((acc, c) => acc + c.items.length, 0)})</span>
+                <button type="button" class="btn btn-dropdown dropdown-toggle" aria-expanded="${this._menuOpen}" aria-haspopup="true" aria-label="${this._locale === 'en' ? 'Explore ecosystem projects' : 'Explorar proyectos del ecosistema'}">
+                  <span>${this._locale === 'en' ? 'Projects' : 'Proyectos'} (${CATALOG.reduce((acc, c) => acc + c.items.length, 0)})</span>
                   <span aria-hidden="true">&#9662;</span>
                 </button>
                 <div class="menu ${this._menuOpen ? 'open' : ''}" role="menu">
@@ -1150,39 +1230,39 @@
                 </div>
               </div>
 
-              <a href="https://status.naindev.com/" class="bar-status" title="Observabilidad y estado de los servicios">
+              <a href="https://status.naindev.com/" class="bar-status" title="${this._locale === 'en' ? 'Observability and service status' : 'Observabilidad y estado de los servicios'}">
                 <span class="status-dot" aria-hidden="true"></span>
                 <span>100% OK</span>
               </a>
 
-              <button type="button" class="btn btn-toggle" aria-label="Minimizar barra del ecosistema" title="Minimizar">
+              <button type="button" class="btn btn-toggle" aria-label="${this._locale === 'en' ? 'Minimize ecosystem bar' : 'Minimizar barra del ecosistema'}" title="${this._locale === 'en' ? 'Minimize' : 'Minimizar'}">
                 &#9650;
               </button>
             </div>
           ` : `
-            <button type="button" class="btn btn-toggle" aria-label="Expandir barra del ecosistema" title="Expandir">
+            <button type="button" class="btn btn-toggle" aria-label="${this._locale === 'en' ? 'Expand ecosystem bar' : 'Expandir barra del ecosistema'}" title="${this._locale === 'en' ? 'Expand' : 'Expandir'}">
               &#9660;
             </button>
           `}
         </div>
 
         <div class="drawer-backdrop ${this._drawerOpen ? 'open' : ''}"></div>
-        <aside class="drawer ${this._drawerOpen ? 'open' : ''}" role="dialog" aria-modal="true" aria-label="Inspector de Arquitectura & Telemetría">
+        <aside class="drawer ${this._drawerOpen ? 'open' : ''}" role="dialog" aria-modal="true" aria-label="${this._locale === 'en' ? 'Architecture & Telemetry Inspector' : 'Inspector de Arquitectura & Telemetría'}">
           <div class="drawer-header">
             <div class="drawer-title-wrap">
               <span class="brand-mark">N</span>
               <div>
                 <div class="drawer-title">${profile.name} — ${profile.title}</div>
-                <div class="drawer-subtitle">INSPECTOR DE ARQUITECTURA & COMPUERTAS</div>
+                <div class="drawer-subtitle">${this._locale === 'en' ? 'ARCHITECTURE INSPECTOR & GATES' : 'INSPECTOR DE ARQUITECTURA & COMPUERTAS'}</div>
               </div>
             </div>
-            <button type="button" class="btn-close" aria-label="Cerrar panel de arquitectura">&#10005;</button>
+            <button type="button" class="btn-close" aria-label="${this._locale === 'en' ? 'Close architecture panel' : 'Cerrar panel de arquitectura'}">&#10005;</button>
           </div>
 
           <div class="drawer-tabs">
-            <button type="button" class="drawer-tab ${this._activeTab === 'invariants' ? 'active' : ''}" data-tab="invariants">Invariantes</button>
-            <button type="button" class="drawer-tab ${this._activeTab === 'telemetry' ? 'active' : ''}" data-tab="telemetry">Telemetría</button>
-            <button type="button" class="drawer-tab ${this._activeTab === 'governance' ? 'active' : ''}" data-tab="governance">Gobernanza</button>
+            <button type="button" class="drawer-tab ${this._activeTab === 'invariants' ? 'active' : ''}" data-tab="invariants">${this._locale === 'en' ? 'Invariants' : 'Invariantes'}</button>
+            <button type="button" class="drawer-tab ${this._activeTab === 'telemetry' ? 'active' : ''}" data-tab="telemetry">${this._locale === 'en' ? 'Telemetry' : 'Telemetría'}</button>
+            <button type="button" class="drawer-tab ${this._activeTab === 'governance' ? 'active' : ''}" data-tab="governance">${this._locale === 'en' ? 'Governance' : 'Gobernanza'}</button>
           </div>
 
           <div class="drawer-content">
