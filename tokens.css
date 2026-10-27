@@ -1,33 +1,66 @@
 /**
- * NainDev Design System Tokens — v1.5
- * Canonical Design System Variables (WCAG 2.1 AAA/AA compliant)
+ * NainDev Design System Tokens — v1.6
+ * Canonical Design System Variables (WCAG 2.1/2.2 AAA compliant)
  * Source: https://brand.naindev.com
  */
 
 :root {
-  /* Core Inks & Surfaces */
+  /* Core Inks & Surfaces (HEX + RGB Channels for alpha compositing) */
   --nain-blue: #0047AB;
+  --nain-blue-rgb: 0, 71, 171;
   --nain-blue-deep: #002B66;
+  --nain-blue-deep-rgb: 0, 43, 102;
   --nain-blue-mid: #3C5F94;
+  --nain-blue-mid-rgb: 60, 95, 148;
   --nain-blue-soft: #4E6B92;
+  --nain-blue-soft-rgb: 78, 107, 146;
   --nain-paper: #EDF1F6;
+  --nain-paper-rgb: 237, 241, 246;
   --nain-surface: #F7F9FC;
+  --nain-surface-rgb: 247, 249, 252;
   --nain-surface-sunken: #DEE6F0;
+  --nain-surface-sunken-rgb: 222, 230, 240;
   --nain-line: #C6D2E3;
+  --nain-line-rgb: 198, 210, 227;
   --nain-brand-black: #1D1D1B;
+  --nain-brand-black-rgb: 29, 29, 27;
+
+  /* Ergonomic Backgrounds (Zero-Fatigue Dark & Light) */
+  --nain-dark-bg: #060D1A;
+  --nain-dark-bg-rgb: 6, 13, 26;
+  --nain-dark-elevated: #0B1930;
+  --nain-dark-elevated-rgb: 11, 25, 48;
+  --nain-dark-line: #1E3A5F;
+  --nain-dark-line-rgb: 30, 58, 95;
+  --nain-slate-subtle: #94A3B8;
+  --nain-slate-muted: #64748B;
 
   /* Accents (Exact Complementaries 180° rotation) */
   --nain-green: #80FF00;
+  --nain-green-rgb: 128, 255, 0;
   --nain-green-ink: #2E6B00;
+  --nain-green-glow: rgba(128, 255, 0, 0.25);
   --nain-red: #FF001F;
+  --nain-red-rgb: 255, 0, 31;
   --nain-red-ink: #C4001A;
+  --nain-cyan: #00FFE0;
+  --nain-cyan-rgb: 0, 255, 224;
 
-  /* Typography */
-  --nain-font-sans: "Urbanist", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Adaptive Semantic Surfaces (Default: Light Mode) */
+  --nain-bg-canvas: var(--nain-paper);
+  --nain-bg-surface: var(--nain-surface);
+  --nain-text-primary: var(--nain-blue-deep);
+  --nain-text-secondary: var(--nain-blue-mid);
+  --nain-text-muted: var(--nain-slate-muted);
+  --nain-border-default: var(--nain-line);
+  --nain-focus-ring: var(--nain-blue);
+
+  /* Typography Scale */
+  --nain-font-sans: "Urbanist", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --nain-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --nain-track-brand: 0.32em;
   --nain-track-label: 0.14em;
-  --nain-track-h1: 0.02em;
+  --nain-track-h1: -0.02em;
 
   /* Spacing Scale (Deterministic Base 4px) */
   --nain-s1: 4px;
@@ -43,17 +76,69 @@
 
   /* Geometry & Radii */
   --nain-radius: 4px;
+  --nain-radius-lg: 8px;
   --nain-cap: 999px;
   --nain-shell: 1200px;
   --nain-measure: 68ch;
+
+  /* Safe Zones (iOS / Android / Notch) */
+  --nain-safe-top: env(safe-area-inset-top, 0px);
+  --nain-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --nain-safe-left: env(safe-area-inset-left, 0px);
+  --nain-safe-right: env(safe-area-inset-right, 0px);
 
   /* Stroke & Mathematical Proportions (Logo Atom) */
   --nain-stroke-ratio: 0.14; /* 14.0% of bounding box */
   --nain-angle-diagonal: -38deg; /* 52.0° above horizontal */
 
-  /* Shadows (Zero-blur solid offset) */
+  /* Shadows (Zero-blur solid block shadows) */
   --nain-shadow-panel: 22px 22px 0 var(--nain-brand-black);
   --nain-shadow-panel-mobile: 12px 12px 0 var(--nain-brand-black);
   --nain-shadow-btn-hover: 6px 6px 0 var(--nain-red);
   --nain-shadow-btn-alt-hover: 6px 6px 0 var(--nain-blue);
+
+  /* Motion & Feedback Timing */
+  --nain-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --nain-duration-instant: 120ms;
+  --nain-duration-fast: 200ms;
+  --nain-duration-smooth: 320ms;
+}
+
+/* Dark Mode Semantic Adaptations */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --nain-bg-canvas: var(--nain-dark-bg);
+    --nain-bg-surface: var(--nain-dark-elevated);
+    --nain-text-primary: var(--nain-paper);
+    --nain-text-secondary: var(--nain-slate-subtle);
+    --nain-text-muted: var(--nain-slate-muted);
+    --nain-border-default: var(--nain-dark-line);
+    --nain-focus-ring: var(--nain-cyan);
+    --nain-shadow-panel: 22px 22px 0 rgba(0, 0, 0, 0.85);
+    --nain-shadow-panel-mobile: 12px 12px 0 rgba(0, 0, 0, 0.85);
+  }
+}
+
+[data-theme="dark"] {
+  --nain-bg-canvas: var(--nain-dark-bg);
+  --nain-bg-surface: var(--nain-dark-elevated);
+  --nain-text-primary: var(--nain-paper);
+  --nain-text-secondary: var(--nain-slate-subtle);
+  --nain-text-muted: var(--nain-slate-muted);
+  --nain-border-default: var(--nain-dark-line);
+  --nain-focus-ring: var(--nain-cyan);
+  --nain-shadow-panel: 22px 22px 0 rgba(0, 0, 0, 0.85);
+  --nain-shadow-panel-mobile: 12px 12px 0 rgba(0, 0, 0, 0.85);
+}
+
+[data-theme="light"] {
+  --nain-bg-canvas: var(--nain-paper);
+  --nain-bg-surface: var(--nain-surface);
+  --nain-text-primary: var(--nain-blue-deep);
+  --nain-text-secondary: var(--nain-blue-mid);
+  --nain-text-muted: var(--nain-slate-muted);
+  --nain-border-default: var(--nain-line);
+  --nain-focus-ring: var(--nain-blue);
+  --nain-shadow-panel: 22px 22px 0 var(--nain-brand-black);
+  --nain-shadow-panel-mobile: 12px 12px 0 var(--nain-brand-black);
 }
